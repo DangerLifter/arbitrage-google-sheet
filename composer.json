@@ -1,5 +1,5 @@
 {
-    "name": "danger-lifter/arbitrage-google-sheet",
+    "name": "dangerlifter/arbitrage-google-sheet",
     "type": "library",
     "description": "Simple classes to work with Rebel Arbitrage Google Sheet",
     "authors": [
