@@ -3,7 +3,7 @@ namespace ArbitrageGoogleSheet\Row;
 
 class RowFactory
 {
-	public function createRowSourceData(array $data = null, array $map = null): RowSourceData
+	public function createRowSourceData(array $data = null, array $map = []): RowSourceData
 	{
 		$row = new RowSourceData();
 		if ($data && $map) {
@@ -12,13 +12,17 @@ class RowFactory
 		return $row;
 	}
 
-	public function createRowScrapedData(array $data = null, array $map = null): RowScrapedData
+	public function createRowScrapedData(array $data = null, array $map = []): RowScrapedData
 	{
 		$row = new RowScrapedData();
 		if ($data && $map) {
 			$this->fill($row->getBolCom(), $data, $map['bolCom'] ?? []);
 			$this->fill($row->getAmazonDe(), $data, $map['amazonDe'] ?? []);
 			$this->fill($row->getAmazonNl(), $data, $map['amazonNl'] ?? []);
+			unset($map['bolCom']);
+			unset($map['amazonDe']);
+			unset($map['amazonNl']);
+			$this->fill($row, $data, $map);
 		}
 		return $row;
 	}

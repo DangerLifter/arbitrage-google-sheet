@@ -82,6 +82,7 @@ class GSheetFactory
 			'updatedAt' 		=> 'AV',
 		];
 		$map = [
+			'ean' => 'W',
 			'bolCom' => $mapBol,
 			'amazonDe' => $mapAmazonDe,
 			'amazonNl' => $mapAmazonNl,

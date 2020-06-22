@@ -9,6 +9,8 @@ class RowScrapedData extends RowAbstract
 
 	private AmazonScrapedData $_amazonNl;
 
+	private ?string $_ean;
+
 	public function __construct()
 	{
 		$this->_bolCom = new BolComScrapedData();
@@ -29,5 +31,16 @@ class RowScrapedData extends RowAbstract
 	public function getAmazonNl(): AmazonScrapedData
 	{
 		return $this->_amazonNl;
+	}
+
+	public function setEan(?string $ean): self
+	{
+		$this->_ean = $ean;
+		return $this;
+	}
+
+	public function getEan(): ?string
+	{
+		return $this->_ean;
 	}
 }
