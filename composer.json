@@ -1,0 +1,28 @@
+{
+    "name": "danger-ifter/arbitrage-google-sheet",
+    "type": "library",
+    "description": "Simple classes to work with Rebel Arbitrage Google Sheet",
+    "authors": [
+        {
+            "name": "Dmitry Pismennyy",
+            "email": "dalifter2006@mail.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "config": {
+        "platform": {
+            "php": "7.4.0"
+        }
+    },
+    "require": {
+        "google/apiclient": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ArbitrageGoogleSheet\\": "src/"
+        }
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^5.1@dev"
+    }
+}
