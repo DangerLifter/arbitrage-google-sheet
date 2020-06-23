@@ -103,7 +103,7 @@ class GSheetFactory
 
 	private function getAllSheets(): array
 	{
-		if (null === $this->_sheets) {
+		if (!isset($this->_sheets)) {
 			$this->_sheets = $this->_sheetService->spreadsheets->get(self::SPREADSHEET_ID)->getSheets();
 		}
 		return $this->_sheets;
