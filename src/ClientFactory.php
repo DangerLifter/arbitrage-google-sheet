@@ -3,23 +3,15 @@ namespace ArbitrageGoogleSheet;
 
 class ClientFactory
 {
-	private const TOKEN_PATH = __DIR__.'/../../var/token.json';
-	private const CREDENTIALS_PATH = __DIR__.'/../../var/credentials.json';
-
-	public function create(): \Google_Client
+	public function create(ClientConfig $config): \Google_Client
 	{
-		$client = new \Google_Client();
-		$client->setApplicationName('Arbitrage Google Sheet');
-		$client->setScopes(\Google_Service_Sheets::SPREADSHEETS);
-		$client->setAuthConfig(self::CREDENTIALS_PATH);
-		$client->setAccessType('offline');
-		$client->setPrompt('select_account consent');
+		$client = $this->createClient($config);
 
 		// Load previously authorized token from a file, if it exists.
 		// The file token.json stores the user's access and refresh tokens, and is
 		// created automatically when the authorization flow completes for the first
 		// time.
-		$tokenPath = self::TOKEN_PATH;
+		$tokenPath = $config->getTokenPath();
 		if (file_exists($tokenPath)) {
 			$accessToken = json_decode(file_get_contents($tokenPath), true);
 			$client->setAccessToken($accessToken);
@@ -52,6 +44,17 @@ class ClientFactory
 			}
 			file_put_contents($tokenPath, json_encode($client->getAccessToken()));
 		}
+		return $client;
+	}
+
+	protected function createClient(ClientConfig $config): \Google_Client
+	{
+		$client = new \Google_Client();
+		$client->setApplicationName($config->getApplicationName());
+		$client->setScopes($config->getScope());
+		$client->setAuthConfig($config->getCredentialsPath());
+		$client->setAccessType($config->getAccessType());
+		$client->setPrompt($config->getPrompt());
 		return $client;
 	}
 
