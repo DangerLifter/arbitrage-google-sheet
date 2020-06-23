@@ -5,9 +5,9 @@ class BolComScrapedData
 {
 	private ?string $_link;
 
-	private ?float $_competitorPrice;
+	private ?string $_competitorPrice;
 
-	private ?float $_rebelPrice;
+	private ?string $_rebelPrice;
 
 	private ?string $_updatedAt;
 
