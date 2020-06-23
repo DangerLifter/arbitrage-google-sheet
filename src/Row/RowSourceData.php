@@ -3,17 +3,17 @@ namespace ArbitrageGoogleSheet\Row;
 
 class RowSourceData extends RowAbstract implements \JsonSerializable
 {
-	private ?string $_bolComLink;
+	private ?string $_bolComLink = null;
 
-	private ?string $_bolComUpdatedAt;
+	private ?string $_bolComUpdatedAt = null;
 
-	private ?string $_amazonDeLink;
+	private ?string $_amazonDeLink = null;
 
-	private ?string $_amazonDeUpdatedAt;
+	private ?string $_amazonDeUpdatedAt = null;
 
-	private ?string $_amazonNlLink;
+	private ?string $_amazonNlLink = null;
 
-	private ?string $_amazonNlUpdatedAt;
+	private ?string $_amazonNlUpdatedAt = null;
 
 	public function getBolComLink(): ?string
 	{

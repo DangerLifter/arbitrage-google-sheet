@@ -9,7 +9,7 @@ class RowScrapedData extends RowAbstract
 
 	private AmazonScrapedData $_amazonNl;
 
-	private ?string $_ean;
+	private ?string $_ean = null;
 
 	public function __construct()
 	{

@@ -3,13 +3,13 @@ namespace ArbitrageGoogleSheet\Row;
 
 class BolComScrapedData
 {
-	private ?string $_link;
+	private ?string $_link = null;
 
-	private ?string $_competitorPrice;
+	private ?string $_competitorPrice = null;
 
-	private ?string $_rebelPrice;
+	private ?string $_rebelPrice = null;
 
-	private ?string $_updatedAt;
+	private ?string $_updatedAt = null;
 
 	public function getLink(): ?string
 	{

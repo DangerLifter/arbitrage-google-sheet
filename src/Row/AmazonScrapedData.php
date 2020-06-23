@@ -3,21 +3,21 @@ namespace ArbitrageGoogleSheet\Row;
 
 class AmazonScrapedData
 {
-	private ?string  $_link;
+	private ?string  $_link = null;
 
-	private ?string  $_price;
+	private ?string  $_price = null;
 
-	private ?string  $_shippingCost;
+	private ?string  $_shippingCost = null;
 
-	private ?string  $_maxQty;
+	private ?string  $_maxQty = null;
 
-	private ?string  $_shippingInfo;
+	private ?string  $_shippingInfo = null;
 
-	private ?string  $_deliveryInDays;
+	private ?string  $_deliveryInDays = null;
 
-	private ?string  $_updatedAt;
+	private ?string  $_updatedAt = null;
 
-	private ?bool $hasGiftOption;
+	private ?bool $hasGiftOption = false;
 
 	public function getLink(): ?string
 	{
