@@ -3,12 +3,18 @@ namespace ArbitrageGoogleSheet;
 
 class ClientConfig
 {
-	private string $_tokenPath = __DIR__.'/../../var/token.json';
-	private string $_credentialsPath = __DIR__.'/../../var/credentials.json';
+	private string $_tokenPath;
+	private string $_credentialsPath;
 	private string $_applicationName = 'Arbitrage Google Sheet';
-	private string $_scope;
+	private string $_scope = \Google_Service_Sheets::SPREADSHEETS;
 	private string $_accessType = 'offline';
 	private string $_prompt = 'select_account consent';
+
+	public function __construct(string $_tokenPath, string $_credentialsPath)
+	{
+		$this->_tokenPath = $_tokenPath;
+		$this->_credentialsPath = $_credentialsPath;
+	}
 
 	public function getTokenPath(): string
 	{
