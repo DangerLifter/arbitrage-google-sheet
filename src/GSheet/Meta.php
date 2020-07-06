@@ -1,7 +1,7 @@
 <?php
 namespace ArbitrageGoogleSheet\GSheet;
 
-class GSheetMeta
+class Meta
 {
 	private string $_spreadsheetId;
 

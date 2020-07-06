@@ -1,13 +1,22 @@
 <?php
-namespace ArbitrageGoogleSheet\Row;
+namespace ArbitrageGoogleSheet\Arbitrage;
 
-class RowScrapedData extends RowAbstract
+use ArbitrageGoogleSheet\Arbitrage\Row\AmazonData;
+use ArbitrageGoogleSheet\Arbitrage\Row\AmazonScrapedData;
+use ArbitrageGoogleSheet\Arbitrage\Row\BolComScrapedData;
+use ArbitrageGoogleSheet\GSheet\Row\RowAbstract;
+
+class Row extends RowAbstract implements \JsonSerializable
 {
 	private BolComScrapedData $_bolCom;
 
 	private AmazonScrapedData $_amazonDe;
 
+	private AmazonData $_amazonDataDe;
+
 	private AmazonScrapedData $_amazonNl;
+
+	private AmazonData $_amazonDataNl;
 
 	private ?string $_ean = null;
 
@@ -16,6 +25,18 @@ class RowScrapedData extends RowAbstract
 		$this->_bolCom = new BolComScrapedData();
 		$this->_amazonDe = new AmazonScrapedData();
 		$this->_amazonNl = new AmazonScrapedData();
+		$this->_amazonDataDe = new AmazonData();
+		$this->_amazonDataNl = new AmazonData();
+	}
+
+	public function getAmazonDataDe(): AmazonData
+	{
+		return $this->_amazonDataDe;
+	}
+
+	public function getAmazonDataNl(): AmazonData
+	{
+		return $this->_amazonDataNl;
 	}
 
 	public function getBolCom(): BolComScrapedData
@@ -42,5 +63,10 @@ class RowScrapedData extends RowAbstract
 	public function getEan(): ?string
 	{
 		return $this->_ean;
+	}
+
+	public function jsonSerialize()
+	{
+		return get_object_vars($this);
 	}
 }

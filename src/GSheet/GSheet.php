@@ -1,10 +1,12 @@
 <?php
 namespace ArbitrageGoogleSheet\GSheet;
 
-use ArbitrageGoogleSheet\Row\RowAbstract;
-use ArbitrageGoogleSheet\Row\RowFactory;
 
-abstract class GSheetAbstract implements GSheetInterface
+use ArbitrageGoogleSheet\GSheet\Row\FactoryInterface;
+use ArbitrageGoogleSheet\GSheet\Row\Helper;
+use ArbitrageGoogleSheet\GSheet\Row\RowAbstract;
+
+class GSheet implements ReaderInterface
 {
 	protected $_sheetService;
 	protected $_sheet;
@@ -13,17 +15,15 @@ abstract class GSheetAbstract implements GSheetInterface
 
 	private $_rowCache = [];
 
-	abstract protected function createRow(array $data): RowAbstract;
-
-	public function __construct(\Google_Service_Sheets $sheetService, \Google_Service_Sheets_Sheet $sheet, GSheetMeta $meta)
+	public function __construct(\Google_Service_Sheets $sheetService, \Google_Service_Sheets_Sheet $sheet, Meta $meta, FactoryInterface $rowFactory)
 	{
 		$this->_sheetService = $sheetService;
 		$this->_sheet = $sheet;
 		$this->_meta = $meta;
-		$this->_rowFactory = new RowFactory();
+		$this->_rowFactory = $rowFactory;
 	}
 
-	public function getMeta(): GSheetMeta
+	public function getMeta(): Meta
 	{
 		return $this->_meta;
 	}
@@ -53,14 +53,30 @@ abstract class GSheetAbstract implements GSheetInterface
 		return $this->readRows($start, $end);
 	}
 
+	protected function getSheetService(): \Google_Service_Sheets
+	{
+		return $this->_sheetService;
+	}
+
+	protected function getSheet(): \Google_Service_Sheets_Sheet
+	{
+		return $this->_sheet;
+	}
+
+	protected function getRowFactory(): FactoryInterface
+	{
+		return $this->_rowFactory;
+	}
+
 	/**
 	 * @return RowAbstract[]
 	 */
 	protected function readRows(int $start, int $end): array
 	{
-		// TODO: extract row factory interface. and put factory to meta. or constructor of sheet.
 		$meta = $this->getMeta();
-		$range = sprintf("'%s'!A%d:%s%d", $this->_sheet->getProperties()->getTitle(),$start, $meta->getMaxColumnName(), $end);
+		$range = Helper::getRange(
+			$this->_sheet->getProperties()->getTitle(), $meta->getMaxColumnName(), $end, 'A', $start
+		);
 		$response = $this->_sheetService->spreadsheets_values->get($meta->getSpreadsheetId(), $range);
 		$values = $response->getValues();
 		$result = [];
@@ -69,5 +85,10 @@ abstract class GSheetAbstract implements GSheetInterface
 		}
 
 		return $result;
+	}
+
+	protected function createRow(array $data): RowAbstract
+	{
+		return $this->_rowFactory->create($data, $this->getMeta()->getColumnMap());
 	}
 }

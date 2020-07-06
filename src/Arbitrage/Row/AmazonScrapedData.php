@@ -1,21 +1,21 @@
 <?php
-namespace ArbitrageGoogleSheet\Row;
+namespace ArbitrageGoogleSheet\Arbitrage\Row;
 
 class AmazonScrapedData
 {
 	private ?string  $_link = null;
 
-	private ?string  $_price = null;
+	private ?float  $_price = null;
 
 	private ?string  $_shippingCost = null;
 
-	private ?string  $_maxQty = null;
+	private ?int  $_maxQty = null;
 
 	private ?string  $_shippingInfo = null;
 
 	private ?string  $_deliveryInDays = null;
 
-	private ?string  $_updatedAt = null;
+	private ?\DateTime  $_updatedAt = null;
 
 	private ?bool $hasGiftOption = false;
 
@@ -30,12 +30,12 @@ class AmazonScrapedData
 		return $this;
 	}
 
-	public function getPrice(): ?string
+	public function getPrice(): ?float
 	{
 		return $this->_price;
 	}
 
-	public function setPrice(?string $price): self
+	public function setPrice(?float $price): self
 	{
 		$this->_price = $price;
 		return $this;
@@ -52,12 +52,12 @@ class AmazonScrapedData
 		return $this;
 	}
 
-	public function getMaxQty(): ?string
+	public function getMaxQty(): ?int
 	{
 		return $this->_maxQty;
 	}
 
-	public function setMaxQty(?string $maxQty): self
+	public function setMaxQty(?int $maxQty): self
 	{
 		$this->_maxQty = $maxQty;
 		return $this;
@@ -85,12 +85,12 @@ class AmazonScrapedData
 		return $this;
 	}
 
-	public function getUpdatedAt(): ?string
+	public function getUpdatedAt(): ?\DateTime
 	{
 		return $this->_updatedAt;
 	}
 
-	public function setUpdatedAt(?string $updatedAt): self
+	public function setUpdatedAt(?\DateTime $updatedAt): self
 	{
 		$this->_updatedAt = $updatedAt;
 		return $this;

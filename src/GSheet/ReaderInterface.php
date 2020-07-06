@@ -1,9 +1,9 @@
 <?php
 namespace ArbitrageGoogleSheet\GSheet;
 
-use ArbitrageGoogleSheet\Row\RowAbstract;
+use ArbitrageGoogleSheet\GSheet\Row\RowAbstract;
 
-interface GSheetInterface
+interface ReaderInterface
 {
 	public function getLastRowIndex(): int;
 
@@ -16,5 +16,5 @@ interface GSheetInterface
 	 */
 	public function getRowsByIndexRange(int $start, int $end): array;
 
-	public function getMeta(): GSheetMeta;
+	public function getMeta(): Meta;
 }

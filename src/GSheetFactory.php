@@ -1,9 +1,9 @@
 <?php
 namespace ArbitrageGoogleSheet;
 
-use ArbitrageGoogleSheet\GSheet\GSheetMeta;
-use ArbitrageGoogleSheet\GSheet\GSheetScraped;
-use ArbitrageGoogleSheet\GSheet\GSheetSource;
+use ArbitrageGoogleSheet\Arbitrage\RowFactory;
+use ArbitrageGoogleSheet\Arbitrage\GSheet;
+use ArbitrageGoogleSheet\GSheet\Meta;
 
 class GSheetFactory
 {
@@ -19,16 +19,10 @@ class GSheetFactory
 		$this->_sheetService = new \Google_Service_Sheets($client);
 	}
 
-	public function createSource(NamedGSheet $namedGSheet): GSheetSource
+	public function createArbitrage(NamedGSheet $namedGSheet): GSheet
 	{
-		$meta = $this->createSourceMeta($namedGSheet);
-		return new GSheetSource($this->_sheetService, $this->findSheet($meta->getSheetId()), $meta);
-	}
-
-	public function createScraped(NamedGSheet $namedGSheet): GSheetScraped
-	{
-		$meta = $this->createScrapedMeta($namedGSheet);
-		return new GSheetScraped($this->_sheetService, $this->findSheet($meta->getSheetId()), $meta);
+		$meta = $this->createMeta($namedGSheet);
+		return new GSheet($this->_sheetService, $this->findSheet($meta->getSheetId()), $meta, new RowFactory());
 	}
 
 	private function getSheetId(NamedGSheet $namedGSheet): int
@@ -42,52 +36,66 @@ class GSheetFactory
 		throw new \InvalidArgumentException('Unknown named google sheet');
 	}
 
-	private function createSourceMeta(NamedGSheet $namedGSheet): GSheetMeta
-	{
-		$sheetId = $this->getSheetId($namedGSheet);
-		$map = [
-			'bolComLink' 			=> 'V',
-			'bolComUpdatedAt' 		=> 'AL',
-			'amazonDeLink' 			=> 'X',
-			'amazonDeUpdatedAt' 	=> 'AU',
-			'amazonNlLink' 			=> 'Y',
-			'amazonNlUpdatedAt' 	=> 'AV',
-		];
-		return new GSheetMeta(self::SPREADSHEET_ID, $sheetId, 'AW', $map, 1);
-	}
-
-	private function createScrapedMeta(NamedGSheet $namedGSheet): GSheetMeta
+	private function createMeta(NamedGSheet $namedGSheet): Meta
 	{
 		$sheetId = $this->getSheetId($namedGSheet);
 		$mapBol = [
 			'link' 				=> 'V',
-			'competitorPrice' 	=> 'AJ',
-			'rebelPrice' 		=> 'AK',
-			'updatedAt' 	 	=> 'AL',
+			'competitorPrice' 	=> ['AJ', fn($v) => $this->priceToFloat($v) ],
+			'rebelPrice' 		=> ['AK', fn($v) => $this->priceToFloat($v) ],
+			'updatedAt' 	 	=> ['AL', fn($v) => $this->toDate($v) ],
 		];
 		$mapAmazonDe = [
 			'link' 				=> 'X',
-			'price' 			=> 'AM',
-			'maxQty' 			=> 'AO',
+			'price' 			=> ['AM', fn($v) => $this->priceToFloat($v) ],
+			'maxQty' 			=> ['AO', fn($v) => $this->toInt($v) ],
 			'deliveryInDays'	=> 'AQ',
 			'hasGiftOption' 	=> 'AS',
-			'updatedAt' 		=> 'AU',
+			'updatedAt' 		=> ['AU', fn($v) => $this->toDate($v) ],
 		];
 		$mapAmazonNl = [
 			'link' 				=> 'Y',
-			'price' 			=> 'AN',
-			'maxQty' 			=> 'AP',
+			'price' 			=> ['AN', fn($v) => $this->priceToFloat($v) ],
+			'maxQty' 			=> ['AP', fn($v) => $this->toInt($v) ],
 			'deliveryInDays'	=> 'AR',
 			'hasGiftOption' 	=> 'AT',
-			'updatedAt' 		=> 'AV',
+			'updatedAt' 		=> ['AV', fn($v) => $this->toDate($v) ],
+		];
+		$mapAmazonDataDe = [
+			'highestPrice7DaysInclVAT' 		=> ['G', fn($v) => $this->priceToFloat($v) ],
+		];
+		$mapAmazonDataNl = [
+			'highestPrice7DaysInclVAT' 		=> ['I', fn($v) => $this->priceToFloat($v) ],
 		];
 		$map = [
 			'ean' => 'W',
 			'bolCom' => $mapBol,
 			'amazonDe' => $mapAmazonDe,
 			'amazonNl' => $mapAmazonNl,
+			'amazonDataDe' => $mapAmazonDataDe,
+			'amazonDataNl' => $mapAmazonDataNl,
 		];
-		return new GSheetMeta(self::SPREADSHEET_ID, $sheetId, 'AW', $map, 1);
+		return new Meta(self::SPREADSHEET_ID, $sheetId, 'AW', $map, 1);
+	}
+
+	private function priceToFloat(string $v): ?float
+	{
+		return $v ? (float)ltrim($v, "€$") : null;
+	}
+
+	private function toFloat(string $v): ?float
+	{
+		return '' !== $v ? (float) $v : null;
+	}
+
+	private function toInt(string $v): ?float
+	{
+		return '' !== $v ? (int) $v : null;
+	}
+
+	private function toDate(string $v): ?\DateTime
+	{
+		return '' !== $v ? \DateTime::createFromFormat('d-m-Y H:i', $v) : null;
 	}
 
 	private function findSheet(int $sheetId): \Google_Service_Sheets_Sheet
