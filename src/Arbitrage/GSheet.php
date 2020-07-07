@@ -21,9 +21,9 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 	public function writeBolInfoRowByIndex(int $index, BolComScrapedData $row): WriterInterface
 	{
 		$mappedData = [
-			'competitorPrice' => $row->getCompetitorPrice() ?? '',
-			'rebelPrice' => $row->getRebelPrice() ?? '',
-			'updatedAt' =>  $row->getUpdatedAt() ? $row->getUpdatedAt()->format('d-m-Y H:i') : ''
+			'competitorPrice' => $this->priceToString($row->getCompetitorPrice()),
+			'rebelPrice' => $this->priceToString($row->getRebelPrice()),
+			'updatedAt' =>  $this->dateToString($row->getUpdatedAt())
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['bolCom']);
 	}
@@ -31,11 +31,11 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 	public function writeAmazonDeInfoRowByIndex(int $index, AmazonScrapedData $row): WriterInterface
 	{
 		$mappedData = [
-			'price' => $row->getPrice() ?? '',
+			'price' => $this->priceToString($row->getPrice()),
 			'maxQty' => $row->getMaxQty() ?? '',
 			'deliveryInDays' => $row->getDeliveryInDays() ?? '',
 			'hasGiftOption' => $row->getHasGiftOption() ? '1' : '0',
-			'updatedAt' =>  $row->getUpdatedAt() ? $row->getUpdatedAt()->format('d-m-Y H:i') : ''
+			'updatedAt' =>  $this->dateToString($row->getUpdatedAt())
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['amazonDe']);
 	}
@@ -43,11 +43,11 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 	public function writeAmazonNlInfoRowByIndex(int $index, AmazonScrapedData $row): WriterInterface
 	{
 		$mappedData = [
-			'price' => $row->getPrice() ?? '',
+			'price' => $this->priceToString($row->getPrice()),
 			'maxQty' => $row->getMaxQty() ?? '',
 			'deliveryInDays' => $row->getDeliveryInDays() ?? '',
 			'hasGiftOption' => $row->getHasGiftOption() ? '1' : '0',
-			'updatedAt' => $row->getUpdatedAt() ? $row->getUpdatedAt()->format('d-m-Y H:i') : ''
+			'updatedAt' => $this->dateToString($row->getUpdatedAt())
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['amazonNl']);
 	}
@@ -55,9 +55,20 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 	public function writeBolComRepriceInfoByIndex(int $index, BolComRepriceData $data): self
 	{
 		$mappedData = [
-			'newPrice' => $data->getNewPrice() ?? '',
-			'updatedAt' => $data->getUpdatedAt() ? $data->getUpdatedAt()->format('d-m-Y H:i') : '',
+			'newPrice' => $this->priceToString($data->getNewPrice()),
+			'updatedAt' => $this->dateToString($data->getUpdatedAt()),
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['bolComRepriceData']);
+	}
+
+	// TODO: extract transformer class + transformers in map from string to value
+	private function priceToString(?float $price): string
+	{
+		return $price ? sprintf('%0.2f', round($price, 2)) : '';
+	}
+
+	private function dateToString(?\DateTime $dateTime): string
+	{
+		return $dateTime ? $dateTime->format('d-m-Y H:i') : '';
 	}
 }
