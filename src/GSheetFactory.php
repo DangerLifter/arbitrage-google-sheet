@@ -14,9 +14,9 @@ class GSheetFactory
 	/** @var \Google_Service_Sheets_Sheet[] */
 	private array $_sheets;
 
-	public function __construct(\Google_Client $client)
+	public function __construct(\Google_Service_Sheets $sheetService)
 	{
-		$this->_sheetService = new \Google_Service_Sheets($client);
+		$this->_sheetService = $sheetService;
 	}
 
 	public function createArbitrage(NamedGSheet $namedGSheet): GSheet

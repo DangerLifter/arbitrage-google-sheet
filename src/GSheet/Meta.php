@@ -22,6 +22,7 @@ class Meta
 		$this->_columnMap = $columnMap;
 	}
 
+	// TODO: map must be object also
 	public function getColumnMap(): array
 	{
 		return $this->_columnMap;

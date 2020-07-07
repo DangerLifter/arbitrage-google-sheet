@@ -23,7 +23,7 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 		$mappedData = [
 			'competitorPrice' => $row->getCompetitorPrice() ?? '',
 			'rebelPrice' => $row->getRebelPrice() ?? '',
-			'updatedAt' => $row->getUpdatedAt(),
+			'updatedAt' =>  $row->getUpdatedAt() ? $row->getUpdatedAt()->format('d-m-Y H:i') : ''
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['bolCom']);
 	}
@@ -35,7 +35,7 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 			'maxQty' => $row->getMaxQty() ?? '',
 			'deliveryInDays' => $row->getDeliveryInDays() ?? '',
 			'hasGiftOption' => $row->getHasGiftOption() ? '1' : '0',
-			'updatedAt' => $row->getUpdatedAt(),
+			'updatedAt' =>  $row->getUpdatedAt() ? $row->getUpdatedAt()->format('d-m-Y H:i') : ''
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['amazonDe']);
 	}
@@ -47,7 +47,7 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 			'maxQty' => $row->getMaxQty() ?? '',
 			'deliveryInDays' => $row->getDeliveryInDays() ?? '',
 			'hasGiftOption' => $row->getHasGiftOption() ? '1' : '0',
-			'updatedAt' => $row->getUpdatedAt(),
+			'updatedAt' => $row->getUpdatedAt() ? $row->getUpdatedAt()->format('d-m-Y H:i') : ''
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['amazonNl']);
 	}
@@ -56,7 +56,7 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 	{
 		$mappedData = [
 			'newPrice' => $data->getNewPrice() ?? '',
-			'updatedAt' => $data->getUpdatedAt(),
+			'updatedAt' => $data->getUpdatedAt() ? $data->getUpdatedAt()->format('d-m-Y H:i') : '',
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['bolComRepriceData']);
 	}

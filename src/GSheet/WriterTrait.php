@@ -15,7 +15,7 @@ trait WriterTrait
 	{
 		$data = [];
 		foreach ($mappedData as $propertyName => $value) {
-			$data[] = $this->createGSheetWriteValueRange($value, $propertyName, $rowIndex, $map);
+			$data[] = $this->createGSheetWriteValueRange((string) $value, $propertyName, $rowIndex, $map);
 		}
 		$request = new \Google_Service_Sheets_BatchUpdateValuesRequest([
 			'valueInputOption' => 'USER_ENTERED',
