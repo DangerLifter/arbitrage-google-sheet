@@ -35,6 +35,7 @@ trait WriterTrait
 	{
 		$sheetTitle = $this->getSheet()->getProperties()->getTitle();
 		$clmName = $map[$propertyName];
+		if (is_array($clmName)) $clmName = $clmName[0];
 		return new \Google_Service_Sheets_ValueRange([
 			'values' => [[$value ?? '']],
 			'range' => Helper::getRangeForSingleRow($sheetTitle, $clmName, $rowIndex)
