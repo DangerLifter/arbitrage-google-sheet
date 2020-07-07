@@ -11,9 +11,9 @@ class AmazonScrapedData
 
 	private ?int  $_maxQty = null;
 
-	private ?string  $_shippingInfo = null;
+	private ?float  $_shippingInfo = null;
 
-	private ?string  $_deliveryInDays = null;
+	private ?int  $_deliveryInDays = null;
 
 	private ?\DateTime  $_updatedAt = null;
 
@@ -41,12 +41,12 @@ class AmazonScrapedData
 		return $this;
 	}
 
-	public function getShippingCost(): ?string
+	public function getShippingCost(): ?float
 	{
 		return $this->_shippingCost;
 	}
 
-	public function setShippingCost(?string $shippingCost): self
+	public function setShippingCost(?float $shippingCost): self
 	{
 		$this->_shippingCost = $shippingCost;
 		return $this;
@@ -74,12 +74,12 @@ class AmazonScrapedData
 		return $this;
 	}
 
-	public function getDeliveryInDays(): ?string
+	public function getDeliveryInDays(): ?int
 	{
 		return $this->_deliveryInDays;
 	}
 
-	public function setDeliveryInDays(?string $liveryInDays): self
+	public function setDeliveryInDays(?int $liveryInDays): self
 	{
 		$this->_deliveryInDays = $liveryInDays;
 		return $this;

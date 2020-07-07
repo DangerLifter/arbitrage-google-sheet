@@ -49,7 +49,7 @@ class GSheetFactory
 			'link' 				=> 'X',
 			'price' 			=> ['AM', fn($v) => $this->priceToFloat($v) ],
 			'maxQty' 			=> ['AO', fn($v) => $this->toInt($v) ],
-			'deliveryInDays'	=> 'AQ',
+			'deliveryInDays'	=> ['AQ', fn($v) => $this->toInt($v) ],
 			'hasGiftOption' 	=> 'AS',
 			'updatedAt' 		=> ['AU', fn($v) => $this->toDate($v) ],
 		];
@@ -57,7 +57,7 @@ class GSheetFactory
 			'link' 				=> 'Y',
 			'price' 			=> ['AN', fn($v) => $this->priceToFloat($v) ],
 			'maxQty' 			=> ['AP', fn($v) => $this->toInt($v) ],
-			'deliveryInDays'	=> 'AR',
+			'deliveryInDays'	=> ['AR', fn($v) => $this->toInt($v) ],
 			'hasGiftOption' 	=> 'AT',
 			'updatedAt' 		=> ['AV', fn($v) => $this->toDate($v) ],
 		];
@@ -67,6 +67,10 @@ class GSheetFactory
 		$mapAmazonDataNl = [
 			'highestPrice7DaysInclVAT' 		=> ['I', fn($v) => $this->priceToFloat($v) ],
 		];
+		$mapBolReprice = [
+			'newPrice' 			=> ['AW', fn($v) => $this->priceToFloat($v) ],
+			'updatedAt' 		=> ['AX', fn($v) => $this->toDate($v) ],
+		];
 		$map = [
 			'ean' => 'W',
 			'bolCom' => $mapBol,
@@ -75,7 +79,15 @@ class GSheetFactory
 			'amazonDataDe' => $mapAmazonDataDe,
 			'amazonDataNl' => $mapAmazonDataNl,
 		];
-		return new Meta(self::SPREADSHEET_ID, $sheetId, 'AW', $map, 1);
+
+		if ($namedGSheet->getName() === NamedGSheet::NEW_TOP_SELLING) {
+			$map['bolComRepriceData'] = $mapBolReprice;
+			$maxColumnName = 'AV';
+		} else {
+			$maxColumnName = 'AW';
+		}
+
+		return new Meta(self::SPREADSHEET_ID, $sheetId, $maxColumnName, $map, 1);
 	}
 
 	private function priceToFloat(string $v): ?float

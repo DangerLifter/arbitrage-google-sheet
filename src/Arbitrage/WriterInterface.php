@@ -2,6 +2,7 @@
 namespace ArbitrageGoogleSheet\Arbitrage;
 
 use ArbitrageGoogleSheet\Arbitrage\Row\AmazonScrapedData;
+use ArbitrageGoogleSheet\Arbitrage\Row\BolComRepriceData;
 use ArbitrageGoogleSheet\Arbitrage\Row\BolComScrapedData;
 
 interface WriterInterface
@@ -11,4 +12,6 @@ interface WriterInterface
 	public function writeAmazonDeInfoRowByIndex(int $index, AmazonScrapedData $row): self;
 
 	public function writeAmazonNlInfoRowByIndex(int $index, AmazonScrapedData $row): self;
+
+	public function writeBolComRepriceInfoByIndex(int $index, BolComRepriceData $data): self;
 }

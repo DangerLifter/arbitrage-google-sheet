@@ -2,6 +2,7 @@
 namespace ArbitrageGoogleSheet\Arbitrage;
 
 use ArbitrageGoogleSheet\Arbitrage\Row\AmazonScrapedData;
+use ArbitrageGoogleSheet\Arbitrage\Row\BolComRepriceData;
 use ArbitrageGoogleSheet\Arbitrage\Row\BolComScrapedData;
 use ArbitrageGoogleSheet\GSheet\WriterTrait;
 use ArbitrageGoogleSheet\GSheet\GSheet as GSheetBase;
@@ -20,8 +21,8 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 	public function writeBolInfoRowByIndex(int $index, BolComScrapedData $row): WriterInterface
 	{
 		$mappedData = [
-			'competitorPrice' => $row->getCompetitorPrice() ? (float) $row->getCompetitorPrice() : '',
-			'rebelPrice' => $row->getRebelPrice() ? (float) $row->getRebelPrice() : '',
+			'competitorPrice' => $row->getCompetitorPrice() ?? '',
+			'rebelPrice' => $row->getRebelPrice() ?? '',
 			'updatedAt' => $row->getUpdatedAt(),
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['bolCom']);
@@ -30,9 +31,9 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 	public function writeAmazonDeInfoRowByIndex(int $index, AmazonScrapedData $row): WriterInterface
 	{
 		$mappedData = [
-			'price' => $row->getPrice() ? (float) $row->getPrice() : '',
-			'maxQty' => $row->getMaxQty() ? (int) $row->getMaxQty() : '',
-			'deliveryInDays' => $row->getDeliveryInDays() ? (int) $row->getDeliveryInDays() : '',
+			'price' => $row->getPrice() ?? '',
+			'maxQty' => $row->getMaxQty() ?? '',
+			'deliveryInDays' => $row->getDeliveryInDays() ?? '',
 			'hasGiftOption' => $row->getHasGiftOption() ? '1' : '0',
 			'updatedAt' => $row->getUpdatedAt(),
 		];
@@ -42,12 +43,21 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 	public function writeAmazonNlInfoRowByIndex(int $index, AmazonScrapedData $row): WriterInterface
 	{
 		$mappedData = [
-			'price' => $row->getPrice() ? (float) $row->getPrice() : '',
-			'maxQty' => $row->getMaxQty() ? (int) $row->getMaxQty() : '',
-			'deliveryInDays' => $row->getDeliveryInDays() ? (int) $row->getDeliveryInDays() : '',
+			'price' => $row->getPrice() ?? '',
+			'maxQty' => $row->getMaxQty() ?? '',
+			'deliveryInDays' => $row->getDeliveryInDays() ?? '',
 			'hasGiftOption' => $row->getHasGiftOption() ? '1' : '0',
 			'updatedAt' => $row->getUpdatedAt(),
 		];
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['amazonNl']);
+	}
+
+	public function writeBolComRepriceInfoByIndex(int $index, BolComRepriceData $data): self
+	{
+		$mappedData = [
+			'newPrice' => $data->getNewPrice() ?? '',
+			'updatedAt' => $data->getUpdatedAt(),
+		];
+		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['bolComRepriceData']);
 	}
 }

@@ -16,23 +16,25 @@ class ReadTest extends \PHPUnit\Framework\TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-
-		$this->sheet = $this->createGSheet();
 	}
 
 	public function testReadRow()
 	{
-		$row = $this->sheet->getRowByIndex(7);
+		$sheet = $this->createGSheet(NamedGSheet::create(NamedGSheet::NEW_TOP_SELLING));
+
+		$row = $sheet->getRowByIndex(2);
 		$this->assertInstanceOf(Row::class, $row);
 		$this->assertNotNull($row->getEan());
+
 		$this->assertNotEmpty($row->getAmazonDataNl()->getHighestPrice7DaysInclVAT());
 		$this->assertNotEmpty($row->getAmazonDataDe()->getHighestPrice7DaysInclVAT());
+
+		$this->assertNotNull($row->getBolComRepriceData()->getNewPrice());
+		$this->assertNotNull($row->getBolComRepriceData()->getUpdatedAt());
 	}
 
-	private function createGSheet(): GSheet
+	private function createGSheet(NamedGSheet $namedGSheet): GSheet
 	{
-		$namedGSheet = NamedGSheet::create(NamedGSheet::NEW_TOP_SELLING);
-
 		$clientConfig = new ClientConfig(__DIR__.'/../../var/token.json', __DIR__.'/../../var/credentials.json');
 
 		$factory = new GSheetFactory((new ClientFactory())->create($clientConfig));

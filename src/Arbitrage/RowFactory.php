@@ -10,16 +10,13 @@ class RowFactory implements FactoryInterface
 	{
 		$row = new Row();
 		if ($data && $map) {
-			$this->fill($row->getBolCom(), $data, $map['bolCom'] ?? []);
-			unset($map['bolCom']);
-			$this->fill($row->getAmazonDe(), $data, $map['amazonDe'] ?? []);
-			unset($map['amazonDe']);
-			$this->fill($row->getAmazonNl(), $data, $map['amazonNl'] ?? []);
-			unset($map['amazonNl']);
-			$this->fill($row->getAmazonDataDe(), $data, $map['amazonDataDe'] ?? []);
-			unset($map['amazonDataDe']);
-			$this->fill($row->getAmazonDataNl(), $data, $map['amazonDataNl'] ?? []);
-			unset($map['amazonDataNl']);
+			foreach ($map as $name => $column) {
+				if (is_array($column)) {
+					$method = 'get'.ucfirst($name);
+					$this->fill($row->$method(), $data, $column ?? []);
+					unset($map[$name]);
+				}
+			}
 			$this->fill($row, $data, $map);
 		}
 		return $row;

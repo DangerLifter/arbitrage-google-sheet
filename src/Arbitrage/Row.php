@@ -3,6 +3,7 @@ namespace ArbitrageGoogleSheet\Arbitrage;
 
 use ArbitrageGoogleSheet\Arbitrage\Row\AmazonData;
 use ArbitrageGoogleSheet\Arbitrage\Row\AmazonScrapedData;
+use ArbitrageGoogleSheet\Arbitrage\Row\BolComRepriceData;
 use ArbitrageGoogleSheet\Arbitrage\Row\BolComScrapedData;
 use ArbitrageGoogleSheet\GSheet\Row\RowAbstract;
 
@@ -18,6 +19,8 @@ class Row extends RowAbstract implements \JsonSerializable
 
 	private AmazonData $_amazonDataNl;
 
+	private BolComRepriceData $_bolComRepriceData;
+
 	private ?string $_ean = null;
 
 	public function __construct()
@@ -27,6 +30,12 @@ class Row extends RowAbstract implements \JsonSerializable
 		$this->_amazonNl = new AmazonScrapedData();
 		$this->_amazonDataDe = new AmazonData();
 		$this->_amazonDataNl = new AmazonData();
+		$this->_bolComRepriceData = new BolComRepriceData();
+	}
+
+	public function getBolComRepriceData(): BolComRepriceData
+	{
+		return $this->_bolComRepriceData;
 	}
 
 	public function getAmazonDataDe(): AmazonData
