@@ -61,6 +61,14 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['bolComRepriceData']);
 	}
 
+	public function writeMessage(int $index, string $message = ''): self
+	{
+		$mappedData = [
+			'message' => $message,
+		];
+		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['message']);
+	}
+
 	// TODO: extract transformer class + transformers in map from string to value
 	private function priceToString(?float $price): string
 	{
