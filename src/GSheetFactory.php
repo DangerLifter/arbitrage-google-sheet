@@ -80,7 +80,8 @@ class GSheetFactory
 			'amazonDataNl' => $mapAmazonDataNl,
 		];
 
-		if ($namedGSheet->getName() === NamedGSheet::NEW_TOP_SELLING) {
+		$extendedSheets = [NamedGSheet::NEW_TOP_SELLING, NamedGSheet::LISTED];
+		if (in_array($namedGSheet->getName(), $extendedSheets, true)) {
 			$map['bolComRepriceData'] = $mapBolReprice;
 			$maxColumnName = 'AV';
 		} else {
