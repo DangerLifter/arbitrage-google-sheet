@@ -23,6 +23,8 @@ class Row extends RowAbstract implements \JsonSerializable
 
 	private ?string $_ean = null;
 
+	private ?string $_message = null;
+
 	public function __construct()
 	{
 		$this->_bolCom = new BolComScrapedData();
@@ -72,6 +74,17 @@ class Row extends RowAbstract implements \JsonSerializable
 	public function getEan(): ?string
 	{
 		return $this->_ean;
+	}
+
+	public function getMessage(): ?string
+	{
+		return $this->_message;
+	}
+
+	public function setMessage(?string $message): self
+	{
+		$this->_message = $message;
+		return $this;
 	}
 
 	public function jsonSerialize()
