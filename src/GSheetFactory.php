@@ -83,7 +83,7 @@ class GSheetFactory
 		$extendedSheets = [NamedGSheet::NEW_TOP_SELLING, NamedGSheet::LISTED];
 		if (in_array($namedGSheet->getName(), $extendedSheets, true)) {
 			$map['bolComRepriceData'] = $mapBolReprice;
-			$map['message'] = 'AV';
+			$map['message'] = 'AY';
 			$maxColumnName = 'AZ';
 		} else {
 			$maxColumnName = 'AW';

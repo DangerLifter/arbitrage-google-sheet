@@ -66,7 +66,7 @@ class GSheet extends GSheetBase implements ReaderInterface, WriterInterface
 		$mappedData = [
 			'message' => $message,
 		];
-		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap()['message']);
+		return $this->writeDataToSheet($mappedData, $index, $this->getMeta()->getColumnMap());
 	}
 
 	// TODO: extract transformer class + transformers in map from string to value
