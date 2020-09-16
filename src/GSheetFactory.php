@@ -7,9 +7,9 @@ use ArbitrageGoogleSheet\GSheet\Meta;
 
 class GSheetFactory
 {
-	private const SPREADSHEET_ID = '1DaZE6giy3d1eZCm2k-kj4CcflmeKPjEnYp7VFEmKxXw';
+	protected const SPREADSHEET_ID = '1DaZE6giy3d1eZCm2k-kj4CcflmeKPjEnYp7VFEmKxXw';
 
-	private \Google_Service_Sheets $_sheetService;
+	protected \Google_Service_Sheets $_sheetService;
 
 	/** @var \Google_Service_Sheets_Sheet[] */
 	private array $_sheets;
