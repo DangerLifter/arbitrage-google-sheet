@@ -25,7 +25,7 @@ class GSheetFactory
 		return new GSheet($this->_sheetService, $this->findSheet($meta->getSheetId()), $meta, new RowFactory());
 	}
 
-	private function getSheetId(NamedGSheet $namedGSheet): int
+	protected function getSheetId(NamedGSheet $namedGSheet): int
 	{
 		switch ($namedGSheet->getName()) {
 			case NamedGSheet::NEW_TOP_SELLING: 	return 946036192;
@@ -36,7 +36,7 @@ class GSheetFactory
 		throw new \InvalidArgumentException('Unknown named google sheet');
 	}
 
-	private function createMeta(NamedGSheet $namedGSheet): Meta
+	protected function createMeta(NamedGSheet $namedGSheet): Meta
 	{
 		$sheetId = $this->getSheetId($namedGSheet);
 		$mapBol = [
