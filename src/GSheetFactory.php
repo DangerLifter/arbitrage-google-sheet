@@ -70,7 +70,7 @@ class GSheetFactory
 		$mapBolReprice = [
 			'newPrice' 			=> ['AW', fn($v) => $this->priceToFloat($v) ],
 			'updatedAt' 		=> ['AX', fn($v) => $this->toDate($v) ],
-			'isApplyNewPrice' 	=> 'AZ',
+			'isApplyNewPrice' 	=> ['AZ', fn($v) => $this->toBoolean($v) ],
 		];
 		$map = [
 			'ean' => 'W',
@@ -101,6 +101,13 @@ class GSheetFactory
 	private function toFloat(string $v): ?float
 	{
 		return '' !== $v ? (float) $v : null;
+	}
+
+	private function toBoolean(string $v): ?float
+	{
+		if ('' === $v) return false;
+		$v = strtolower($v);
+		return in_array($v, ['on', 'yes', 'true']);
 	}
 
 	private function toInt(string $v): ?float
