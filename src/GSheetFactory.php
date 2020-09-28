@@ -70,6 +70,7 @@ class GSheetFactory
 		$mapBolReprice = [
 			'newPrice' 			=> ['AW', fn($v) => $this->priceToFloat($v) ],
 			'updatedAt' 		=> ['AX', fn($v) => $this->toDate($v) ],
+			'isApplyNewPrice' 	=> 'AZ',
 		];
 		$map = [
 			'ean' => 'W',
@@ -84,7 +85,7 @@ class GSheetFactory
 		if (in_array($namedGSheet->getName(), $extendedSheets, true)) {
 			$map['bolComRepriceData'] = $mapBolReprice;
 			$map['message'] = 'AY';
-			$maxColumnName = 'AZ';
+			$maxColumnName = 'BA';
 		} else {
 			$maxColumnName = 'AW';
 		}
