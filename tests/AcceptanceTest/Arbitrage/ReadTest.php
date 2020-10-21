@@ -36,6 +36,6 @@ class ReadTest extends \PHPUnit\Framework\TestCase
 
 		$client = (new ClientFactory())->create($clientConfig);
 		$factory = new GSheetFactory( new \Google_Service_Sheets($client));
-		return $factory->createArbitrage($sheetId);
+		return $factory->createSheet($factory->createArbitrageMeta($sheetId));
 	}
 }

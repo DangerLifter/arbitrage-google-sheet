@@ -28,7 +28,7 @@ class WriteTest extends \PHPUnit\Framework\TestCase
 				->setMethods(['batchUpdate'])
 				->getMock();
 
-		$sheet = $this->createGSheet('946036192', true, $mockGoogleServiceSheets);
+		$sheet = $this->createGSheet('946036192',$mockGoogleServiceSheets);
 
 		$googleReturnValue = new \Google_Service_Sheets_BatchUpdateValuesResponse();
 		$googleReturnValue->setTotalUpdatedCells(1);
@@ -45,9 +45,9 @@ class WriteTest extends \PHPUnit\Framework\TestCase
 		$sheet->writeBolComRepriceInfoByIndex(2, $repriceData);
 	}
 
-	private function createGSheet(string $sheetId, bool $isExtended, $mockGoogleServiceSheets): GSheet
+	private function createGSheet(string $sheetId, $mockGoogleServiceSheets): GSheet
 	{
 		$factory = new GSheetFactory($mockGoogleServiceSheets);
-		return $factory->createArbitrage($sheetId, $isExtended);
+		return $factory->createSheet($factory->createArbitrageMeta($sheetId));
 	}
 }

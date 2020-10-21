@@ -19,13 +19,12 @@ class GSheetFactory
 		$this->_sheetService = $sheetService;
 	}
 
-	public function createArbitrage(string $sheetId): GSheet
+	public function createSheet(Meta $meta): GSheet
 	{
-		$meta = $this->createMeta($sheetId);
-		return new GSheet($this->_sheetService, $this->findSheet($sheetId), $meta, new RowFactory());
+		return new GSheet($this->_sheetService, $this->findSheet($meta->getSheetId()), $meta, new RowFactory());
 	}
 
-	private function createMeta(string $sheetId): Meta
+	public function createArbitrageMeta(string $sheetId): Meta
 	{
 		$mapBol = [
 			'link' 				=> 'W',
