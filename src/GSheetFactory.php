@@ -19,47 +19,35 @@ class GSheetFactory
 		$this->_sheetService = $sheetService;
 	}
 
-	public function createArbitrage(NamedGSheet $namedGSheet): GSheet
+	public function createArbitrage(string $sheetId): GSheet
 	{
-		$meta = $this->createMeta($namedGSheet);
-		return new GSheet($this->_sheetService, $this->findSheet($meta->getSheetId()), $meta, new RowFactory());
+		$meta = $this->createMeta($sheetId);
+		return new GSheet($this->_sheetService, $this->findSheet($sheetId), $meta, new RowFactory());
 	}
 
-	protected function getSheetId(NamedGSheet $namedGSheet): int
+	private function createMeta(string $sheetId): Meta
 	{
-		switch ($namedGSheet->getName()) {
-			case NamedGSheet::NEW_TOP_SELLING: 	return 946036192;
-			case NamedGSheet::LISTED: 			return 2001628456;
-			case NamedGSheet::MONITORING: 		return 728531664;
-			case NamedGSheet::POTENTIAL: 		return 752781793;
-		}
-		throw new \InvalidArgumentException('Unknown named google sheet');
-	}
-
-	protected function createMeta(NamedGSheet $namedGSheet): Meta
-	{
-		$sheetId = $this->getSheetId($namedGSheet);
 		$mapBol = [
-			'link' 				=> 'V',
-			'competitorPrice' 	=> ['AJ', fn($v) => $this->priceToFloat($v) ],
-			'rebelPrice' 		=> ['AK', fn($v) => $this->priceToFloat($v) ],
-			'updatedAt' 	 	=> ['AL', fn($v) => $this->toDate($v) ],
+			'link' 				=> 'W',
+			'competitorPrice' 	=> ['AK', fn($v) => $this->priceToFloat($v) ],
+			'rebelPrice' 		=> ['AL', fn($v) => $this->priceToFloat($v) ],
+			'updatedAt' 	 	=> ['AM', fn($v) => $this->toDate($v) ],
 		];
 		$mapAmazonDe = [
-			'link' 				=> 'X',
-			'price' 			=> ['AM', fn($v) => $this->priceToFloat($v) ],
-			'maxQty' 			=> ['AO', fn($v) => $this->toInt($v) ],
-			'deliveryInDays'	=> ['AQ', fn($v) => $this->toInt($v) ],
-			'hasGiftOption' 	=> 'AS',
-			'updatedAt' 		=> ['AU', fn($v) => $this->toDate($v) ],
-		];
-		$mapAmazonNl = [
 			'link' 				=> 'Y',
 			'price' 			=> ['AN', fn($v) => $this->priceToFloat($v) ],
 			'maxQty' 			=> ['AP', fn($v) => $this->toInt($v) ],
 			'deliveryInDays'	=> ['AR', fn($v) => $this->toInt($v) ],
 			'hasGiftOption' 	=> 'AT',
 			'updatedAt' 		=> ['AV', fn($v) => $this->toDate($v) ],
+		];
+		$mapAmazonNl = [
+			'link' 				=> 'Z',
+			'price' 			=> ['AO', fn($v) => $this->priceToFloat($v) ],
+			'maxQty' 			=> ['AQ', fn($v) => $this->toInt($v) ],
+			'deliveryInDays'	=> ['AS', fn($v) => $this->toInt($v) ],
+			'hasGiftOption' 	=> 'AU',
+			'updatedAt' 		=> ['AW', fn($v) => $this->toDate($v) ],
 		];
 		$mapAmazonDataDe = [
 			'highestPrice7DaysInclVAT' 		=> ['G', fn($v) => $this->priceToFloat($v) ],
@@ -68,12 +56,12 @@ class GSheetFactory
 			'highestPrice7DaysInclVAT' 		=> ['I', fn($v) => $this->priceToFloat($v) ],
 		];
 		$mapBolReprice = [
-			'newPrice' 			=> ['AW', fn($v) => $this->priceToFloat($v) ],
-			'updatedAt' 		=> ['AX', fn($v) => $this->toDate($v) ],
-			'isApplyNewPrice' 	=> ['AZ', fn($v) => $this->toBoolean($v) ],
+			'newPrice' 			=> ['AX', fn($v) => $this->priceToFloat($v) ],
+			'updatedAt' 		=> ['AY', fn($v) => $this->toDate($v) ],
+			'isApplyNewPrice' 	=> ['BA', fn($v) => $this->toBoolean($v) ],
 		];
 		$map = [
-			'ean' => 'W',
+			'ean' => 'X',
 			'bolCom' => $mapBol,
 			'amazonDe' => $mapAmazonDe,
 			'amazonNl' => $mapAmazonNl,
@@ -81,14 +69,9 @@ class GSheetFactory
 			'amazonDataNl' => $mapAmazonDataNl,
 		];
 
-		$extendedSheets = [NamedGSheet::NEW_TOP_SELLING, NamedGSheet::LISTED];
-		if (in_array($namedGSheet->getName(), $extendedSheets, true)) {
-			$map['bolComRepriceData'] = $mapBolReprice;
-			$map['message'] = 'AY';
-			$maxColumnName = 'BA';
-		} else {
-			$maxColumnName = 'AW';
-		}
+		$map['bolComRepriceData'] = $mapBolReprice;
+		$map['message'] = 'AZ';
+		$maxColumnName = 'BB';
 
 		return new Meta(self::SPREADSHEET_ID, $sheetId, $maxColumnName, $map, 1);
 	}

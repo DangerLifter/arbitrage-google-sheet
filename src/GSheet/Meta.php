@@ -28,6 +28,12 @@ class Meta
 		return $this->_columnMap;
 	}
 
+	public function addToColumnMap(string $key, $value): self
+	{
+		$this->_columnMap[$key] = $value;
+		return $this;
+	}
+
 	public function getSpreadsheetId(): string
 	{
 		return $this->_spreadsheetId;

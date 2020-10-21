@@ -7,7 +7,6 @@ use ArbitrageGoogleSheet\Arbitrage\Row;
 use ArbitrageGoogleSheet\ClientConfig;
 use ArbitrageGoogleSheet\ClientFactory;
 use ArbitrageGoogleSheet\GSheetFactory;
-use ArbitrageGoogleSheet\NamedGSheet;
 
 class WriteTest extends \PHPUnit\Framework\TestCase
 {
@@ -29,12 +28,12 @@ class WriteTest extends \PHPUnit\Framework\TestCase
 				->setMethods(['batchUpdate'])
 				->getMock();
 
-		$sheet = $this->createGSheet(NamedGSheet::create(NamedGSheet::NEW_TOP_SELLING), $mockGoogleServiceSheets);
+		$sheet = $this->createGSheet('946036192', true, $mockGoogleServiceSheets);
 
 		$googleReturnValue = new \Google_Service_Sheets_BatchUpdateValuesResponse();
 		$googleReturnValue->setTotalUpdatedCells(1);
 		$innerMock = $this->createMock(\Google_Service_Sheets_Resource_SpreadsheetsValues::class);
-		$innerMock->expects($this->once())->method('batchUpdate')->will($this->returnValue($googleReturnValue));
+		$innerMock->expects(self::once())->method('batchUpdate')->will(self::returnValue($googleReturnValue));
 
 		$mockGoogleServiceSheets->spreadsheets_values = $innerMock;
 
@@ -46,9 +45,9 @@ class WriteTest extends \PHPUnit\Framework\TestCase
 		$sheet->writeBolComRepriceInfoByIndex(2, $repriceData);
 	}
 
-	private function createGSheet(NamedGSheet $namedGSheet, $mockGoogleServiceSheets): GSheet
+	private function createGSheet(string $sheetId, bool $isExtended, $mockGoogleServiceSheets): GSheet
 	{
 		$factory = new GSheetFactory($mockGoogleServiceSheets);
-		return $factory->createArbitrage($namedGSheet);
+		return $factory->createArbitrage($sheetId, $isExtended);
 	}
 }
