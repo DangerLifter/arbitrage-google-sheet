@@ -11,7 +11,7 @@ class AmazonScrapedData
 
 	private ?int  $_maxQty = null;
 
-	private ?float  $_shippingInfo = null;
+	private ?string  $_shippingInfo = null;
 
 	private ?int  $_deliveryInDays = null;
 
